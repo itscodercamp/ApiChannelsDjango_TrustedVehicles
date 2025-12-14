@@ -132,28 +132,28 @@ def test_create_vehicle():
         "variant": "SX Optional",
         "price": "1450000",
         "year": "2023",
-        "mfg_year": "2023",
-        "reg_year": "2023",
+        "mfgYear": "2023",          # camelCase
+        "regYear": "2023",          # camelCase
         "status": "For Sale",
         "verified": "true",
         "category": "4w",
-        "vehicle_type": "Private",
+        "vehicleType": "Private",   # camelCase
         "color": "White",
-        "fuel_type": "Diesel",
+        "fuelType": "Diesel",       # camelCase
         "transmission": "Automatic",
-        "km_driven": 15000,
-        "reg_number": "MH12PQ5678",
-        "chassis_number": "MA3...123",
-        "rto_state": "MH",
+        "odometer": 15000,          # camelCase mapped to km_driven
+        "regNumber": "MH12PQ5678",  # camelCase
+        "chassisNumber": "MA3...123", # camelCase
+        "rtoState": "MH",           # camelCase
         "ownership": "1st Owner",
-        "valid_upto": "2038-05-20",
+        "validUpto": "2038-05-20",  # camelCase
         "tax": "LTT",
-        "rc_available": "true",
+        "rcAvailable": "true",      # camelCase
         "scraped": "false",
         "hypothecation": "Open",
         "insurance": "Comprehensive",
-        "insurance_expiry": "2024-05-20",
-        "service_history": "Available",
+        "insuranceExpiry": "2024-05-20", # camelCase
+        "serviceHistory": "Available",   # camelCase
         "remarks": "Excellent condition vehicle",
         "inspection_report": json.dumps(inspection_data)
     }

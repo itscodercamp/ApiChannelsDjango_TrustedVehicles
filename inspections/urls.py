@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import InspectionCreateView, WebsiteInspectionCreateView
+from .views import InspectionListCreateView, InspectionDetailView, WebsiteInspectionCreateView
 
 urlpatterns = [
-    path('inspections', InspectionCreateView.as_view(), name='create-inspection'),
+    path('inspections', InspectionListCreateView.as_view(), name='inspection-list-create'),
+    path('inspections/<int:pk>', InspectionDetailView.as_view(), name='inspection-detail'),
     path('customerinspection', WebsiteInspectionCreateView.as_view(), name='website-inspection'),
 ]

@@ -53,6 +53,10 @@ class ContactRequestCreateView(generics.CreateAPIView):
     queryset = ContactRequest.objects.all()
     serializer_class = ContactRequestSerializer
 
+class SupportContactView(generics.CreateAPIView):
+    queryset = ContactRequest.objects.all()
+    serializer_class = ContactRequestSerializer
+
 class SellRequestCreateView(generics.CreateAPIView):
     queryset = SellRequest.objects.all()
     serializer_class = SellRequestSerializer

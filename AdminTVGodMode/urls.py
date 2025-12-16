@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/', include('website.urls')),
     path('api/', include('inspections.urls')),
     path('api/', include('marketplace.urls')),
+    path('api/admin/', include('admin_api.urls')),
     path('api/', include('core.urls')),
 ]
 

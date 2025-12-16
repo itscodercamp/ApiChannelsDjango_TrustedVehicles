@@ -28,5 +28,17 @@ class MarketplaceUser(models.Model):
             self.password = make_password(self.password)
         super().save(*args, **kwargs)
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    @property
+    def is_active(self):
+        return True
+
     def __str__(self):
         return f"{self.full_name} ({self.phone})"

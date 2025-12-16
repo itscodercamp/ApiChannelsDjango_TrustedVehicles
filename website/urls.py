@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     ContactRequestCreateView, SellRequestCreateView, LoanRequestCreateView,
     InsuranceLeadCreateView, PDIRequestCreateView, DealerDemoRequestCreateView,
-    CarListView, CarDetailView
+    CarListView, CarDetailView, SupportContactView
 )
 
 urlpatterns = [
@@ -11,7 +11,7 @@ urlpatterns = [
     
     # 2. Buy Car (Inventory)
     path('cars', CarListView.as_view(), name='car-list'),
-    path('cars/<uuid:id>', CarDetailView.as_view(), name='car-detail'),
+    path('cars/<str:id>', CarDetailView.as_view(), name='car-detail'),
     
     # 3. Insurance Quote
     path('insurance/quote', InsuranceLeadCreateView.as_view(), name='insurance-quote'),
@@ -27,4 +27,5 @@ urlpatterns = [
     
     # 7. Contact Us
     path('contact', ContactRequestCreateView.as_view(), name='contact'),
+    path('support/contact', SupportContactView.as_view(), name='support-contact'),
 ]

@@ -1,8 +1,7 @@
 from django.urls import path
-from .views import EmployeeLoginView, MarketplaceLoginView, MarketplaceRegisterView
+from .views import AuthLoginView, AuthRegisterView
 
 urlpatterns = [
-    path('login', EmployeeLoginView.as_view(), name='employee-login'),
-    path('marketplace/auth/login', MarketplaceLoginView.as_view(), name='marketplace-login'),
-    path('marketplace/auth/register', MarketplaceRegisterView.as_view(), name='marketplace-register'),
+    path('auth/login', AuthLoginView.as_view(), name='auth-login'),
+    path('auth/register', AuthRegisterView.as_view(), name='auth-register'),
 ]

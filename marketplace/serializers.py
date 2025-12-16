@@ -76,11 +76,43 @@ class BannerSerializer(serializers.ModelSerializer):
         return None
 
 class InquirySerializer(serializers.ModelSerializer):
+    # Field mapping
+    vehicleId = serializers.PrimaryKeyRelatedField(source='vehicle', queryset=Vehicle.objects.all(), write_only=True)
+    offerPrice = serializers.DecimalField(source='offer_price', max_digits=12, decimal_places=2, required=False) # Needs model update if not exists
+
     class Meta:
         model = Inquiry
         fields = '__all__'
+        extra_kwargs = {
+            'vehicle': {'read_only': True},
+            'user': {'read_only': True} # User set in view
+        }
 
 class MarketplaceContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = MarketplaceContact
         fields = '__all__'
+
+from .models import Favorite, Notification
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    # Return full vehicle details in response
+    vehicle = VehicleSerializer(read_only=True)
+    vehicleId = serializers.PrimaryKeyRelatedField(source='vehicle', queryset=Vehicle.objects.all(), write_only=True)
+
+    class Meta:
+        model = Favorite
+        fields = ['id', 'vehicle', 'vehicleId', 'created_at']
+        extra_kwargs = {'user': {'read_only': True}}
+    
+    def create(self, validated_data):
+        user = self.context['request'].user
+        # Prevent duplicates
+        favorite, created = Favorite.objects.get_or_create(user=user, vehicle=validated_data['vehicle'])
+        return favorite
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
+        extra_kwargs = {'user': {'read_only': True}}

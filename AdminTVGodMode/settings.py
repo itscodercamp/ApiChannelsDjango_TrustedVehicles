@@ -16,7 +16,15 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-j(##_sbn1nzmb!ycv6bab
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
+# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
+
+# Allow requests from these domains
+ALLOWED_HOSTS = [
+    'trustedvehicles.com',
+    'www.trustedvehicles.com',
+    'apis.trustedvehicles.com',
+    'inspect.trustedvehicles.com'
+]
 
 # Application definition
 
@@ -114,6 +122,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+# CSRF trusted origins (must include scheme: http/https)
+CSRF_TRUSTED_ORIGINS = [
+    'https://trustedvehicles.com',
+    'https://www.trustedvehicles.com',
+    'https://apis.trustedvehicles.com',
+    'https://inspect.trustedvehicles.com'
+]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

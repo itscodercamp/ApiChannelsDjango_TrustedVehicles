@@ -88,6 +88,43 @@ class AuthRegisterView(APIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# Keeping old views for backward compatibility if needed, or remove them.
-# For this task, strict adherence to request:
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+
+class EmployeeLoginView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        
+        if not email or not password:
+             return Response({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Authenticate standard Django User (Employee/Admin)
+            user = User.objects.get(email=email)
+            if user.check_password(password):
+                 if not user.is_active:
+                     return Response({"error": "Account disabled"}, status=status.HTTP_403_FORBIDDEN)
+                 
+                 # Generate JWT for Employee
+                 refresh = RefreshToken.for_user(user)
+                 refresh['role'] = 'employee'
+                 refresh['is_staff'] = user.is_staff
+                 refresh['is_superuser'] = user.is_superuser
+                 
+                 return Response({
+                    "message": "Login successful",
+                    "token": str(refresh.access_token),
+                    "user": {
+                        "id": user.id,
+                        "email": user.email,
+                        "username": user.username,
+                        "is_staff": user.is_staff,
+                        "is_superuser": user.is_superuser
+                    }
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        except User.DoesNotExist:
+             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 

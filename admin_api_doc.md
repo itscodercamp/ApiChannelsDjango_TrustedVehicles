@@ -4,6 +4,11 @@ Base URL: `/api/admin`
 Authentication: **Requires Admin User** (Staff status).
 Header: `Authorization: Bearer <admin_token>`
 
+> **Admin Login (Employee/Staff)**
+> Endpoint: `POST /api/auth/employee/login`
+> Body: `{"email": "admin@example.com", "password": "..."}`
+> Response: Returns `token` (JWT) and `user` details including `is_staff`, `is_superuser`.
+
 > These APIs follow standard REST patterns (GET list, POST create, GET detail, PUT update, DELETE).
 > All responses are standard JSON. Lists are paginated (optional) or full (depending on config).
 

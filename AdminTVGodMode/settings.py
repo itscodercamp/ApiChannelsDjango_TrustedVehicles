@@ -16,15 +16,19 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-j(##_sbn1nzmb!ycv6bab
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
+# Allow requests from these domains + local development
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
+if 'trustedvehicles.com' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.extend([
+        'trustedvehicles.com',
+        'www.trustedvehicles.com',
+        'apis.trustedvehicles.com',
+        'inspect.trustedvehicles.com'
+    ])
 
-# Allow requests from these domains
-ALLOWED_HOSTS = [
-    'trustedvehicles.com',
-    'www.trustedvehicles.com',
-    'apis.trustedvehicles.com',
-    'inspect.trustedvehicles.com'
-]
+# Disable automatic slash appending (allows URLs without trailing slash)
+# APPEND_SLASH = False
+
 
 # Application definition
 
@@ -118,17 +122,43 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS
-# CORS
+# CORS Settings - Allow all origins for development/production
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+# Allow all HTTP methods
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Allow all headers
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # CSRF trusted origins (must include scheme: http/https)
 CSRF_TRUSTED_ORIGINS = [
     'https://trustedvehicles.com',
     'https://www.trustedvehicles.com',
     'https://apis.trustedvehicles.com',
-    'https://inspect.trustedvehicles.com'
+    'https://inspect.trustedvehicles.com',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:5173',
 ]
 
 

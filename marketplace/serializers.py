@@ -29,7 +29,8 @@ class VehicleSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         # Create a mutable copy of the data
-        data = data.copy()
+        if hasattr(data, 'copy'):
+            data = data.copy()
         
         # Initialize inspection_report if not present or parse if it is a string
         inspection_report = {}
@@ -51,9 +52,24 @@ class VehicleSerializer(serializers.ModelSerializer):
                 inspection_report[key] = value
                 keys_to_remove.append(key)
         
+        # Validation: If status is 'Issue', remark must be present
+        # We check the collected inspection_report
+        errors = {}
+        for key, value in inspection_report.items():
+            if key.endswith('_status') and value == 'Issue':
+                # Find matching remark key
+                base_name = key.replace('_status', '')
+                remark_key = f"{base_name}_remark"
+                if not inspection_report.get(remark_key):
+                    errors[remark_key] = ["Remark is mandatory when status is 'Issue'"]
+        
+        if errors:
+            raise serializers.ValidationError(errors)
+
         # Remove the flat fields from data so they don't cause "unexpected field" errors
         for key in keys_to_remove:
-            del data[key]
+            if key in data:
+                del data[key]
             
         # Update/Set the inspection_report JSON
         if inspection_report:
